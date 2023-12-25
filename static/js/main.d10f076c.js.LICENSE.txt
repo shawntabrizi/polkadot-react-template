@@ -1,3 +1,7 @@
+/*! noble-curves - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+
+/*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+
 /**
  * @license React
  * react-dom.production.min.js
