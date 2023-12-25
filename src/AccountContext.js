@@ -32,7 +32,6 @@ const AccountProvider = ({ children }) => {
   return (
     <AccountContext.Provider value={{ selectedAccount, setSelectedAccount }}>
       <div>
-        <h2>Account Selector</h2>
         {accounts.length > 0 ? (
           <div>
             <label>
