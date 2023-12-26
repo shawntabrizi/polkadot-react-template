@@ -3,14 +3,14 @@ import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 
 const AccountContext = createContext();
 
-const AccountProvider = ({ children }) => {
+const AccountProvider = ({ appName, children }) => {
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
-        await web3Enable('polkadot-react-template');
+        await web3Enable(appName);
         const injectedAccounts = await web3Accounts();
         setAccounts(injectedAccounts);
         if (injectedAccounts.length > 0 && !selectedAccount) {

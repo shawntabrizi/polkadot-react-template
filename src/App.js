@@ -8,7 +8,7 @@ function App() {
   return (
     <div>
       <h1>Polkadot React Template</h1>
-      <AccountProvider>
+      <AccountProvider appName="polkadot-react-template">
         <SubstrateProvider providerUrl="wss://rpc.polkadot.io">
           <h2>Polkadot</h2>
           <BlockNumber />

@@ -1,70 +1,91 @@
-# Getting Started with Create React App
+# Polkadot React Template
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a minimal [React JS](https://react.dev/) template for Polkadot SDK Blockchains.
+
+This project was bootstrapped with:
+
+- [Create React App](https://github.com/facebook/create-react-app)
+- [React GitHub Pages](https://github.com/gitname/react-gh-pages)
+- [Polkadot JS](https://polkadot.js.org/)
+
+This project is intended to be very minimal, easy to understand, and easy to hack on top of. For a slightly more robust implementation of components, check out the [substrate-front-end-template](https://github.com/substrate-developer-hub/substrate-front-end-template).
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+### `yarn start`
 
-Runs the app in the development mode.\
+Runs the app in the development mode.
+
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
+The page will reload when you make changes.
+
 You may also see any lint errors in the console.
 
-### `npm test`
+### `yarn deploy`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Builds the app and deploys it to GitHub pages.
 
-### `npm run build`
+To set up your project correctly for GitHub pages deployment, see [the instructions here](https://github.com/gitname/react-gh-pages).
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Components
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+This project comes with some minimal working components that you can copy or modify for your needs.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `AccountContext``
 
-### `npm run eject`
+The `AccountContext` component works with the Polkadot JS Extension to load all available accounts the user has imported.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+You can access the user-selected account in your components by calling:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```js
+import { useAccount } from './AccountContext';
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+const { selectedAccount } = useAccount();
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+console.log(selectedAccount.address);
+```
 
-## Learn More
+You can submit transactions from this account by creating an `injector`:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```js
+const injector = await web3FromAddress(selectedAccount.address);
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+await api.tx.system
+  .remark('Hello, World!')
+  .signAndSend(selectedAccount.address, { signer: injector.signer });
+```
 
-### Code Splitting
+#### Props
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- `appName`: A string which will appear when the user grants your application access to their Polkadot JS extension.
 
-### Analyzing the Bundle Size
+### `SubstrateContext`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+The `SubstrateContext` gives you access to the Polkadot JS API in the context of a connected Substrate blockchain.
 
-### Making a Progressive Web App
+You can access the API with:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```js
+import { useSubstrate } from './SubstrateContext';
 
-### Advanced Configuration
+const { api } = useSubstrate();
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+console.log(api.genesisHash.toHex());
+```
 
-### Deployment
+#### Props
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- `providerUrl`: A websocket URL to connect your application to the Substrate based blockchain. For example: `wss://rpc.polkadot.io`.
 
-### `npm run build` fails to minify
+### Other Components
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This template also comes with some other minimal components that take advantage of the `AccountContext` and `SubstrateContext`.
+
+- `BlockNumber`: Subscribes to the current blocknumber of the connected blockchain.
+- `AccountBalance`: Subscribes to the current balance of the selected account on the connected blockchain.
+- `Remark`: Allows the selected account to submit a `remark` transaction using the Polkadot JS extension.
+
+These components should provide the basic structure needed to build more complex and custom components.
