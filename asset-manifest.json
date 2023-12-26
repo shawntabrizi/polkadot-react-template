@@ -1,10 +1,13 @@
 {
   "files": {
-    "main.js": "/polkadot-react-template/static/js/main.9aa5ac31.js",
+    "main.css": "/polkadot-react-template/static/css/main.fe595d58.css",
+    "main.js": "/polkadot-react-template/static/js/main.522c2c1b.js",
     "index.html": "/polkadot-react-template/index.html",
-    "main.9aa5ac31.js.map": "/polkadot-react-template/static/js/main.9aa5ac31.js.map"
+    "main.fe595d58.css.map": "/polkadot-react-template/static/css/main.fe595d58.css.map",
+    "main.522c2c1b.js.map": "/polkadot-react-template/static/js/main.522c2c1b.js.map"
   },
   "entrypoints": [
-    "static/js/main.9aa5ac31.js"
+    "static/css/main.fe595d58.css",
+    "static/js/main.522c2c1b.js"
   ]
 }
