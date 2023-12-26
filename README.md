@@ -2,13 +2,15 @@
 
 This is a minimal [React JS](https://react.dev/) template for Polkadot SDK Blockchains.
 
+![Substrate Balance Graph Screenshot](screenshot.png)
+
 This project was bootstrapped with:
 
 - [Create React App](https://github.com/facebook/create-react-app)
 - [React GitHub Pages](https://github.com/gitname/react-gh-pages)
 - [Polkadot JS](https://polkadot.js.org/)
 
-This project is intended to be very minimal, easy to understand, and easy to hack on top of. For a slightly more robust implementation of components, check out the [substrate-front-end-template](https://github.com/substrate-developer-hub/substrate-front-end-template).
+This project is intended to be very minimal, easy to understand, and easy to hack on top of. For a slightly more robust implementation of react components, check out the [substrate-front-end-template](https://github.com/substrate-developer-hub/substrate-front-end-template).
 
 ## Available Scripts
 
