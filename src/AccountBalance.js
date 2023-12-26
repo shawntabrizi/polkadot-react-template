@@ -5,7 +5,7 @@ import { useAccount } from './AccountContext';
 const AccountBalance = () => {
   const { api } = useSubstrate();
   const { selectedAccount } = useAccount();
-  const [balance, setBalance] = useState(null);
+  const [balances, setBalances] = useState(null);
   const [tokenInfo, setTokenInfo] = useState({ name: 'UNITS', decimals: 12 });
 
   useEffect(() => {
@@ -23,33 +23,41 @@ const AccountBalance = () => {
       }
     };
 
-    const fetchBalance = async () => {
+    const fetchBalances = async () => {
       try {
         if (api && selectedAccount) {
           const { address } = selectedAccount;
           // Subscribe to balance changes
-          const unsubscribe = await api.query.system.account(
+          const unsubscribe = await api.derive.balances.all(
             address,
-            ({ data: { free } }) => {
-              setBalance(free.toString());
+            (result) => {
+              setBalances(result);
             }
           );
 
           return () => unsubscribe();
         }
       } catch (error) {
-        console.error('Error fetching account balance:', error);
+        console.error('Error fetching account balances:', error);
       }
     };
 
     fetchTokenInfo();
-    fetchBalance();
+    fetchBalances();
   }, [api, selectedAccount]);
 
-  // Format the balance with correct decimal places
-  const formattedBalance =
-    balance !== null
-      ? (parseFloat(balance) / 10 ** tokenInfo.decimals).toFixed(4)
+  // Calculate the total balance
+  const calculateTotalBalance = () => {
+    if (balances) {
+      const { freeBalance, reservedBalance } = balances;
+      return freeBalance.add(reservedBalance);
+    }
+    return null;
+  };
+
+  const formattedBalance = (value) =>
+    value !== null
+      ? (parseFloat(value) / 10 ** tokenInfo.decimals).toFixed(4)
       : 'Loading Balance...';
 
   const formattedAddress = () => {
@@ -65,11 +73,34 @@ const AccountBalance = () => {
   return (
     <div>
       {selectedAccount ? (
-        <p>
-          <strong>Address:</strong> {formattedAddress()}
-          <br />
-          <strong>Balance:</strong> {formattedBalance} {tokenInfo.name}
-        </p>
+        <div>
+          <p>
+            <strong>Address:</strong> {formattedAddress()}
+          </p>
+          <div>
+            <strong>Total Balance:</strong>{' '}
+            {formattedBalance(calculateTotalBalance())} {tokenInfo.name}
+            <ul>
+              <li>
+                Reserved: {formattedBalance(balances?.reservedBalance)}{' '}
+                {tokenInfo.name}
+              </li>
+              <li>
+                Free: {formattedBalance(balances?.freeBalance)} {tokenInfo.name}
+              </li>
+              <ul>
+                <li>
+                  Locked: {formattedBalance(balances?.lockedBalance)}{' '}
+                  {tokenInfo.name}
+                </li>
+                <li>
+                  Available: {formattedBalance(balances?.availableBalance)}{' '}
+                  {tokenInfo.name}
+                </li>
+              </ul>
+            </ul>
+          </div>
+        </div>
       ) : (
         <p>No account selected.</p>
       )}
