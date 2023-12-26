@@ -7,7 +7,7 @@ const Remark = () => {
   const { api } = useSubstrate();
   const { selectedAccount } = useAccount();
   const [status, setStatus] = useState('');
-  const [remark, setRemark] = useState(null);
+  const [remark, setRemark] = useState('');
 
   const handleRemarkChange = (event) => {
     setRemark(event.target.value);
@@ -39,13 +39,22 @@ const Remark = () => {
           });
 
         // Clear the remark field after submission
-        setRemark(null);
+        setRemark('');
       }
     } catch (error) {
       console.error('Error submitting transaction:', error);
       setStatus(`Error: ${error.message}`);
     }
   };
+
+  // Disable the component if there is no API or no selected account
+  if (!api || !selectedAccount) {
+    return (
+      <div>
+        <p>Please connect to the Polkadot extension and select an account.</p>
+      </div>
+    );
+  }
 
   return (
     <div>

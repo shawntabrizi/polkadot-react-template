@@ -36,7 +36,7 @@ To set up your project correctly for GitHub pages deployment, see [the instructi
 
 This project comes with some minimal working components that you can copy or modify for your needs.
 
-### `AccountContext``
+### `AccountContext`
 
 The `AccountContext` component works with the Polkadot JS Extension to load all available accounts the user has imported.
 

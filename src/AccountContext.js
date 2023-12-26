@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { web3AccountsSubscribe, web3Enable } from '@polkadot/extension-dapp';
 
 const AccountContext = createContext();
@@ -6,27 +6,25 @@ const AccountContext = createContext();
 const AccountProvider = ({ appName, children }) => {
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [accounts, setAccounts] = useState([]);
+  const [isConnected, setIsConnected] = useState(false);
 
-  useEffect(() => {
-    const fetchAccounts = async () => {
-      try {
-        await web3Enable(appName);
-        const unsubscribe = await web3AccountsSubscribe((injectedAccounts) => {
-          setAccounts(injectedAccounts);
-          if (injectedAccounts.length > 0 && !selectedAccount) {
-            // Set the first account as the selected account initially
-            setSelectedAccount(injectedAccounts[0]);
-          }
-        });
+  const connectAccounts = async () => {
+    try {
+      await web3Enable(appName);
+      const unsubscribe = await web3AccountsSubscribe((injectedAccounts) => {
+        setAccounts(injectedAccounts);
+        if (injectedAccounts.length > 0 && !selectedAccount) {
+          // Set the first account as the selected account initially
+          setSelectedAccount(injectedAccounts[0]);
+        }
+      });
 
-        return () => unsubscribe();
-      } catch (error) {
-        console.error('Error fetching accounts:', error);
-      }
-    };
-
-    fetchAccounts();
-  }, [appName, selectedAccount]);
+      setIsConnected(true);
+      return () => unsubscribe();
+    } catch (error) {
+      console.error('Error fetching accounts:', error);
+    }
+  };
 
   const handleAccountChange = (account) => {
     setSelectedAccount(account);
@@ -35,7 +33,11 @@ const AccountProvider = ({ appName, children }) => {
   return (
     <AccountContext.Provider value={{ selectedAccount, setSelectedAccount }}>
       <div>
-        {accounts.length > 0 ? (
+        {!isConnected ? (
+          <button onClick={connectAccounts}>
+            Connect to Polkadot Extension
+          </button>
+        ) : accounts.length > 0 ? (
           <div>
             <label>
               Select Account:
