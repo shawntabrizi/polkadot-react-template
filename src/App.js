@@ -1,22 +1,25 @@
 import { SubstrateProvider } from './SubstrateContext';
 import { AccountProvider } from './AccountContext';
-import BlockNumber from './BlockNumber';
 import AccountBalance from './AccountBalance';
+import BlockNumber from './BlockNumber';
+import Remark from './Remark';
 
 function App() {
   return (
     <div>
-      <h2>Polkadot React Template</h2>
+      <h1>Polkadot React Template</h1>
       <AccountProvider>
         <SubstrateProvider providerUrl="wss://rpc.polkadot.io">
-          <h3>Polkadot</h3>
+          <h2>Polkadot</h2>
           <BlockNumber />
           <AccountBalance />
+          <Remark />
         </SubstrateProvider>
         <SubstrateProvider providerUrl="wss://kusama-rpc.polkadot.io">
-          <h3>Kusama</h3>
+          <h2>Kusama</h2>
           <BlockNumber />
           <AccountBalance />
+          <Remark />
         </SubstrateProvider>
       </AccountProvider>
     </div>
