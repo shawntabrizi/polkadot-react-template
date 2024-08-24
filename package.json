@@ -4,8 +4,8 @@
   "homepage": "https://shawntabrizi.github.io/polkadot-react-template",
   "private": true,
   "dependencies": {
-    "@polkadot/api": "^10.11.2",
-    "@polkadot/extension-dapp": "^0.46.6",
+    "@polkadot/api": "^12.4.2",
+    "@polkadot/extension-dapp": "^0.52.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1"
